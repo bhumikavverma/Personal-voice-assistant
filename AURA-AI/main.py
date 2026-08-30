@@ -1,11 +1,20 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
 from aura_core.voice_engine.speaker import Speaker
 from aura_core.voice_engine.listener import Listener
+from aura_core.brain.router import IntentRouter
 
 def main():
     speaker = Speaker()
     listener = Listener()
+    router = IntentRouter()
     
-    speaker.speak("Hello! I am AURA, your personal assistant. How can I help you?")
+    speaker.speak("AURA Phase 5 with Dual Memory Architecture is online.")
     
     while True:
         user_input = listener.listen()
@@ -17,8 +26,11 @@ def main():
             speaker.speak("Goodbye! Have a great day.")
             break
             
-        # Echo response for testing Phase 1
-        speaker.speak(f"You said: {user_input}")
+        # Route the command or send to LLM
+        response = router.route(user_input)
+        
+        if response:
+            speaker.speak(response)
 
 if __name__ == "__main__":
     main()
